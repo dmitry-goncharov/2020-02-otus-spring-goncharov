@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="cardDao" class="ru.gonch.spring.dao.CardDaoResCsv">
+        <constructor-arg name="csvFile" value="/qa.csv"/>
+    </bean>
+
+    <bean id="cardService" class="ru.gonch.spring.service.CardServiceImpl">
+        <constructor-arg name="cardDao" ref="cardDao"/>
+    </bean>
+
+    <bean id="cardGameCli" class="ru.gonch.spring.game.CardGameCli">
+        <constructor-arg name="cardService" ref="cardService"/>
+    </bean>
+</beans>
