@@ -1,0 +1,4 @@
+# Defines app language
+# Supported language tags: en-US, ru-RU
+app:
+  language-tag: en-US
