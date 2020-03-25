@@ -1,0 +1,6 @@
+app:
+  csv-file: /qa.csv
+spring:
+  shell:
+    interactive:
+      enabled: false
