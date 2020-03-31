@@ -1,0 +1,50 @@
+package ru.gonch.spring.shell;
+
+import org.springframework.shell.standard.ShellComponent;
+import org.springframework.shell.standard.ShellMethod;
+import org.springframework.shell.standard.ShellOption;
+import ru.gonch.spring.model.Genre;
+import ru.gonch.spring.service.GenreService;
+
+import java.util.List;
+
+@ShellComponent
+public class GenreShell {
+    private final GenreService genreService;
+
+    public GenreShell(GenreService genreService) {
+        this.genreService = genreService;
+    }
+
+    @ShellMethod(value = "Add genre", key = {"add-genre"})
+    public String addGenre(@ShellOption String name) {
+        long id = genreService.insert(new Genre(name));
+        return String.format("Genre with id %d has been added", id);
+    }
+
+    @ShellMethod(value = "Get genre by id", key = {"get-genre"})
+    public String getGenre(@ShellOption long id) {
+        Genre genre = genreService.getById(id);
+        return String.format("Genre: %s", genre);
+    }
+
+    @ShellMethod(value = "Get all genres", key = {"get-genres"})
+    public String getGenres(@ShellOption int limit,
+                            @ShellOption int offset) {
+        List<Genre> genres = genreService.getAll(limit, offset);
+        return String.format("Genres: %s", genres);
+    }
+
+    @ShellMethod(value = "Update genre by id", key = {"upd-genre"})
+    public String updateGenre(@ShellOption long id,
+                              @ShellOption String name) {
+        genreService.update(new Genre(id, name));
+        return String.format("Genre with id %d has been updated", id);
+    }
+
+    @ShellMethod(value = "Delete genre command", key = {"del-genre"})
+    public String deleteGenre(@ShellOption long id) {
+        genreService.deleteById(id);
+        return String.format("Genre with id %d has been deleted", id);
+    }
+}
