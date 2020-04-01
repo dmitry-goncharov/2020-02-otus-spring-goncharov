@@ -3,15 +3,16 @@ package ru.gonch.spring.service;
 import ru.gonch.spring.model.Genre;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GenreService {
     long insert(Genre genre);
 
     List<Genre> getAll(int limit, int offset);
 
-    Genre getById(long id);
+    Optional<Genre> getById(long id);
 
-    void update(Genre genre);
+    boolean update(Genre genre);
 
-    void deleteById(long id);
+    boolean deleteById(long id);
 }

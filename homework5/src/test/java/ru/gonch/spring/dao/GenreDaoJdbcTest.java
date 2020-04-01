@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Import;
 import ru.gonch.spring.model.Genre;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -23,7 +24,7 @@ class GenreDaoJdbcTest {
         long id = genreDaoJdbc.insert(newGenre);
 
         assertTrue(id > 0);
-        assertEquals(newGenre.getName(), genreDaoJdbc.getById(id).getName());
+        assertEquals(newGenre.getName(), genreDaoJdbc.getById(id).orElseThrow().getName());
     }
 
     @Test
@@ -52,16 +53,17 @@ class GenreDaoJdbcTest {
 
     @Test
     void getByIdTest() {
-        Genre genre = genreDaoJdbc.getById(3);
+        Optional<Genre> genre = genreDaoJdbc.getById(3);
 
-        assertEquals("Prose", genre.getName());
+        assertTrue(genre.isPresent());
+        assertEquals("Prose", genre.get().getName());
     }
 
     @Test
     void updateTest() {
-        genreDaoJdbc.update(new Genre(genreDaoJdbc.getById(1).getId(), "Ode"));
+        genreDaoJdbc.update(new Genre(genreDaoJdbc.getById(1).orElseThrow().getId(), "Ode"));
 
-        assertEquals("Ode", genreDaoJdbc.getById(1).getName());
+        assertEquals("Ode", genreDaoJdbc.getById(1).orElseThrow().getName());
     }
 
     @Test

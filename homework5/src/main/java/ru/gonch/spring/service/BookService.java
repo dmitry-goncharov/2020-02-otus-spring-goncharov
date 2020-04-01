@@ -3,6 +3,7 @@ package ru.gonch.spring.service;
 import ru.gonch.spring.model.Book;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BookService {
     long insert(Book book);
@@ -13,9 +14,9 @@ public interface BookService {
 
     List<Book> getBooksByAuthorId(long authorId, int limit, int offset);
 
-    Book getById(long id);
+    Optional<Book> getById(long id);
 
-    void update(Book book);
+    boolean update(Book book);
 
-    void deleteById(long id);
+    boolean deleteById(long id);
 }

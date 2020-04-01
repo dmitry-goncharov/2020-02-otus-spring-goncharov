@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Import;
 import ru.gonch.spring.model.Book;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -23,11 +24,11 @@ class BookDaoJdbcTest {
 
     @Test
     void insertTest() {
-        Book newBook = new Book("Test Book", genreDaoJdbc.getById(1), authorDaoJdbc.getById(1));
+        Book newBook = new Book("Test Book", genreDaoJdbc.getById(1).orElseThrow(), authorDaoJdbc.getById(1).orElseThrow());
         long id = bookDaoJdbc.insert(newBook);
 
         assertTrue(id > 0);
-        assertEquals(newBook.getName(), bookDaoJdbc.getById(id).getName());
+        assertEquals(newBook.getName(), bookDaoJdbc.getById(id).orElseThrow().getName());
     }
 
     @Test
@@ -100,17 +101,18 @@ class BookDaoJdbcTest {
 
     @Test
     void getByIdTest() {
-        Book author = bookDaoJdbc.getById(3);
+        Optional<Book> book = bookDaoJdbc.getById(3);
 
-        assertEquals("Don stories", author.getName());
+        assertTrue(book.isPresent());
+        assertEquals("Don stories", book.get().getName());
     }
 
     @Test
     void updateTest() {
-        Book book = bookDaoJdbc.getById(1);
+        Book book = bookDaoJdbc.getById(1).orElseThrow();
         bookDaoJdbc.update(new Book(book.getId(), "A.S.Pushkin Eugene Onegin", book.getGenre(), book.getAuthor()));
 
-        assertEquals("A.S.Pushkin Eugene Onegin", bookDaoJdbc.getById(1).getName());
+        assertEquals("A.S.Pushkin Eugene Onegin", bookDaoJdbc.getById(1).orElseThrow().getName());
     }
 
     @Test

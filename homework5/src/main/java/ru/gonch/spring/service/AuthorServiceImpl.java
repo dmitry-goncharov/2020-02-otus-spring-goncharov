@@ -5,6 +5,7 @@ import ru.gonch.spring.dao.AuthorDao;
 import ru.gonch.spring.model.Author;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
@@ -25,17 +26,17 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author getById(long id) {
+    public Optional<Author> getById(long id) {
         return authorDao.getById(id);
     }
 
     @Override
-    public void update(Author author) {
-        authorDao.update(author);
+    public boolean update(Author author) {
+        return authorDao.update(author) > 0;
     }
 
     @Override
-    public void deleteById(long id) {
-        authorDao.deleteById(id);
+    public boolean deleteById(long id) {
+        return authorDao.deleteById(id) > 0;
     }
 }

@@ -5,6 +5,7 @@ import ru.gonch.spring.dao.BookDao;
 import ru.gonch.spring.model.Book;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -35,17 +36,17 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book getById(long id) {
+    public Optional<Book> getById(long id) {
         return bookDao.getById(id);
     }
 
     @Override
-    public void update(Book book) {
-        bookDao.update(book);
+    public boolean update(Book book) {
+        return bookDao.update(book) > 0;
     }
 
     @Override
-    public void deleteById(long id) {
-        bookDao.deleteById(id);
+    public boolean deleteById(long id) {
+        return bookDao.deleteById(id) > 0;
     }
 }

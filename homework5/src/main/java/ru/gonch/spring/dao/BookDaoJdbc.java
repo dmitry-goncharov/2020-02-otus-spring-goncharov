@@ -12,6 +12,7 @@ import ru.gonch.spring.model.Genre;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class BookDaoJdbc implements BookDao {
@@ -71,28 +72,32 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public Book getById(long id) {
-        String sql = getAllBooksSql() +
-                " where b.book_id=:id";
-        Map<String, Object> params = Map.of("id", id);
-        return jdbc.queryForObject(sql, params, getRowMapper());
+    public Optional<Book> getById(long id) {
+        try {
+            String sql = getAllBooksSql() +
+                    " where b.book_id=:id";
+            Map<String, Object> params = Map.of("id", id);
+            return Optional.ofNullable(jdbc.queryForObject(sql, params, getRowMapper()));
+        } catch (Exception e) {
+            return Optional.empty();
+        }
     }
 
     @Override
-    public void update(Book book) {
+    public int update(Book book) {
         Map<String, Object> params = Map.of(
                 "id", book.getId(),
                 "name", book.getName(),
                 "genreId", book.getGenre().getId(),
                 "authorId", book.getAuthor().getId()
         );
-        jdbc.update("update books set name=:name,genre_id=:genreId,author_id=:authorId where book_id=:id", params);
+        return jdbc.update("update books set name=:name,genre_id=:genreId,author_id=:authorId where book_id=:id", params);
     }
 
     @Override
-    public void deleteById(long id) {
+    public int deleteById(long id) {
         Map<String, Object> params = Map.of("id", id);
-        jdbc.update("delete from books where book_id=:id", params);
+        return jdbc.update("delete from books where book_id=:id", params);
     }
 
     private String getAllBooksSql() {

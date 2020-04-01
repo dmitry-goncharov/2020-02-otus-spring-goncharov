@@ -3,6 +3,7 @@ package ru.gonch.spring.dao;
 import ru.gonch.spring.model.Book;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BookDao {
     long insert(Book book);
@@ -13,9 +14,9 @@ public interface BookDao {
 
     List<Book> getBooksByAuthorId(long authorId, int limit, int offset);
 
-    Book getById(long id);
+    Optional<Book> getById(long id);
 
-    void update(Book book);
+    int update(Book book);
 
-    void deleteById(long id);
+    int deleteById(long id);
 }

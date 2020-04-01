@@ -7,6 +7,7 @@ import ru.gonch.spring.model.Author;
 import ru.gonch.spring.service.AuthorService;
 
 import java.util.List;
+import java.util.Optional;
 
 @ShellComponent
 public class AuthorShell {
@@ -24,8 +25,8 @@ public class AuthorShell {
 
     @ShellMethod(value = "Get author by id", key = {"get-author"})
     public String getAuthor(@ShellOption long id) {
-        Author author = authorService.getById(id);
-        return String.format("Author: %s", author);
+        Optional<Author> author = authorService.getById(id);
+        return String.format("Author: %s", author.isPresent() ? author.get() : "none");
     }
 
     @ShellMethod(value = "Get all authors", key = {"get-authors"})
@@ -38,13 +39,23 @@ public class AuthorShell {
     @ShellMethod(value = "Update author by id", key = {"upd-author"})
     public String updateAuthor(@ShellOption long id,
                                @ShellOption String name) {
-        authorService.update(new Author(id, name));
-        return String.format("Author with id %d has been updated", id);
+        if (authorService.update(new Author(id, name))) {
+            return String.format("Author with id %d has been updated", id);
+        } else {
+            return getNotFoundString(id);
+        }
     }
 
     @ShellMethod(value = "Delete author command", key = {"del-author"})
     public String deleteAuthor(@ShellOption long id) {
-        authorService.deleteById(id);
-        return String.format("Author with id %d has been deleted", id);
+        if (authorService.deleteById(id)) {
+            return String.format("Author with id %d has been deleted", id);
+        } else {
+            return getNotFoundString(id);
+        }
+    }
+
+    private String getNotFoundString(long id) {
+        return String.format("Author with id %d not found", id);
     }
 }

@@ -10,6 +10,7 @@ import ru.gonch.spring.model.Author;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class AuthorDaoJdbc implements AuthorDao {
@@ -40,24 +41,28 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     @Override
-    public Author getById(long id) {
-        Map<String, Object> params = Map.of("id", id);
-        return jdbc.queryForObject("select * from authors where author_id=:id", params, getRowMapper());
+    public Optional<Author> getById(long id) {
+        try {
+            Map<String, Object> params = Map.of("id", id);
+            return Optional.ofNullable(jdbc.queryForObject("select * from authors where author_id=:id", params, getRowMapper()));
+        } catch (Exception e) {
+            return Optional.empty();
+        }
     }
 
     @Override
-    public void update(Author author) {
+    public int update(Author author) {
         Map<String, Object> params = Map.of(
                 "id", author.getId(),
                 "name", author.getName()
         );
-        jdbc.update("update authors set name=:name where author_id=:id", params);
+        return jdbc.update("update authors set name=:name where author_id=:id", params);
     }
 
     @Override
-    public void deleteById(long id) {
+    public int deleteById(long id) {
         Map<String, Object> params = Map.of("id", id);
-        jdbc.update("delete from authors where author_id=:id", params);
+        return jdbc.update("delete from authors where author_id=:id", params);
     }
 
     private RowMapper<Author> getRowMapper() {

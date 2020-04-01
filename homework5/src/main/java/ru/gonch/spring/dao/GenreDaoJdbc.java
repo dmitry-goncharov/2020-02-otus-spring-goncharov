@@ -10,6 +10,7 @@ import ru.gonch.spring.model.Genre;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class GenreDaoJdbc implements GenreDao {
@@ -40,24 +41,28 @@ public class GenreDaoJdbc implements GenreDao {
     }
 
     @Override
-    public Genre getById(long id) {
-        Map<String, Object> params = Map.of("id", id);
-        return jdbc.queryForObject("select * from genres where genre_id=:id", params, getRowMapper());
+    public Optional<Genre> getById(long id) {
+        try {
+            Map<String, Object> params = Map.of("id", id);
+            return Optional.ofNullable(jdbc.queryForObject("select * from genres where genre_id=:id", params, getRowMapper()));
+        } catch (Exception e) {
+            return Optional.empty();
+        }
     }
 
     @Override
-    public void update(Genre genre) {
+    public int update(Genre genre) {
         Map<String, Object> params = Map.of(
                 "id", genre.getId(),
                 "name", genre.getName()
         );
-        jdbc.update("update genres set name=:name where genre_id=:id", params);
+        return jdbc.update("update genres set name=:name where genre_id=:id", params);
     }
 
     @Override
-    public void deleteById(long id) {
+    public int deleteById(long id) {
         Map<String, Object> params = Map.of("id", id);
-        jdbc.update("delete from genres where genre_id=:id", params);
+        return jdbc.update("delete from genres where genre_id=:id", params);
     }
 
     private RowMapper<Genre> getRowMapper() {

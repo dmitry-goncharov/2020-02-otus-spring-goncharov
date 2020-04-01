@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Import;
 import ru.gonch.spring.model.Author;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -23,7 +24,7 @@ class AuthorDaoJdbcTest {
         long id = authorDaoJdbc.insert(newAuthor);
 
         assertTrue(id > 0);
-        assertEquals(newAuthor.getName(), authorDaoJdbc.getById(id).getName());
+        assertEquals(newAuthor.getName(), authorDaoJdbc.getById(id).orElseThrow().getName());
     }
 
     @Test
@@ -52,16 +53,17 @@ class AuthorDaoJdbcTest {
 
     @Test
     void getByIdTest() {
-        Author author = authorDaoJdbc.getById(3);
+        Optional<Author> author = authorDaoJdbc.getById(3);
 
-        assertEquals("Dostoevsky", author.getName());
+        assertTrue(author.isPresent());
+        assertEquals("Dostoevsky", author.get().getName());
     }
 
     @Test
     void updateTest() {
-        authorDaoJdbc.update(new Author(authorDaoJdbc.getById(1).getId(), "A.S.Pushkin"));
+        authorDaoJdbc.update(new Author(authorDaoJdbc.getById(1).orElseThrow().getId(), "A.S.Pushkin"));
 
-        assertEquals("A.S.Pushkin", authorDaoJdbc.getById(1).getName());
+        assertEquals("A.S.Pushkin", authorDaoJdbc.getById(1).orElseThrow().getName());
     }
 
     @Test
