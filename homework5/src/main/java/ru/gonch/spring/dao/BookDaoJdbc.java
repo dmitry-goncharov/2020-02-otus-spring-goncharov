@@ -104,8 +104,8 @@ public class BookDaoJdbc implements BookDao {
         return "select b.book_id, b.name as book_name, b.genre_id, b.author_id," +
                 " g.genre_id, g.name as genre_name, a.author_id, a.name as author_name" +
                 " from books b" +
-                " left join genres g on b.genre_id = g.genre_id" +
-                " left join authors a on b.author_id = a.author_id";
+                " inner join genres g on b.genre_id = g.genre_id" +
+                " inner join authors a on b.author_id = a.author_id";
     }
 
     private RowMapper<Book> getRowMapper() {

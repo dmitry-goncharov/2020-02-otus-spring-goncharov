@@ -32,7 +32,7 @@ public class AuthorDaoJdbc implements AuthorDao {
 
     @Override
     public List<Author> getAll(int limit, int offset) {
-        String sql = "select * from authors limit :limit offset :offset";
+        String sql = "select author_id, name from authors limit :limit offset :offset";
         Map<String, Object> params = Map.of(
                 "limit", limit,
                 "offset", offset
@@ -44,7 +44,7 @@ public class AuthorDaoJdbc implements AuthorDao {
     public Optional<Author> getById(long id) {
         try {
             Map<String, Object> params = Map.of("id", id);
-            return Optional.ofNullable(jdbc.queryForObject("select * from authors where author_id=:id", params, getRowMapper()));
+            return Optional.ofNullable(jdbc.queryForObject("select author_id, name from authors where author_id=:id", params, getRowMapper()));
         } catch (Exception e) {
             return Optional.empty();
         }

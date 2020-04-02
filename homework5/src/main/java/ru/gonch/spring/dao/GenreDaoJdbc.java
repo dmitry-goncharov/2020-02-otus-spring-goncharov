@@ -32,7 +32,7 @@ public class GenreDaoJdbc implements GenreDao {
 
     @Override
     public List<Genre> getAll(int limit, int offset) {
-        String sql = "select * from genres limit :limit offset :offset";
+        String sql = "select genre_id, name from genres limit :limit offset :offset";
         Map<String, Object> params = Map.of(
                 "limit", limit,
                 "offset", offset
@@ -44,7 +44,7 @@ public class GenreDaoJdbc implements GenreDao {
     public Optional<Genre> getById(long id) {
         try {
             Map<String, Object> params = Map.of("id", id);
-            return Optional.ofNullable(jdbc.queryForObject("select * from genres where genre_id=:id", params, getRowMapper()));
+            return Optional.ofNullable(jdbc.queryForObject("select genre_id, name from genres where genre_id=:id", params, getRowMapper()));
         } catch (Exception e) {
             return Optional.empty();
         }

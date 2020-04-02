@@ -23,12 +23,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public long insert(Book book) {
-        if (genreDao.getById(book.getGenre().getId()).isEmpty()) {
-            throw new IllegalArgumentException("Incorrect genre id");
-        }
-        if (authorDao.getById(book.getAuthor().getId()).isEmpty()) {
-            throw new IllegalArgumentException("Incorrect author id");
-        }
+        checkGenreIdNonEmpty(book);
+        checkAuthorIdNonEmpty(book);
         return bookDao.insert(book);
     }
 
@@ -54,17 +50,25 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public boolean update(Book book) {
-        if (genreDao.getById(book.getGenre().getId()).isEmpty()) {
-            throw new IllegalArgumentException("Incorrect genre id");
-        }
-        if (authorDao.getById(book.getAuthor().getId()).isEmpty()) {
-            throw new IllegalArgumentException("Incorrect author id");
-        }
+        checkGenreIdNonEmpty(book);
+        checkAuthorIdNonEmpty(book);
         return bookDao.update(book) > 0;
     }
 
     @Override
     public boolean deleteById(long id) {
         return bookDao.deleteById(id) > 0;
+    }
+
+    private void checkAuthorIdNonEmpty(Book book) {
+        if (authorDao.getById(book.getAuthor().getId()).isEmpty()) {
+            throw new IllegalArgumentException("Incorrect author id");
+        }
+    }
+
+    private void checkGenreIdNonEmpty(Book book) {
+        if (genreDao.getById(book.getGenre().getId()).isEmpty()) {
+            throw new IllegalArgumentException("Incorrect genre id");
+        }
     }
 }
