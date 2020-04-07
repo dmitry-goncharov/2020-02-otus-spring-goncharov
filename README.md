@@ -36,3 +36,11 @@
 - Used spring jdbc
 - Used spring shell
 - Used H2 in-memory database
+
+### Homework 6
+- Simple Library Program
+- Scheme and data files are stored in resources
+- Used spring boot
+- Used spring data jpa with hibernate
+- Used spring shell
+- Used H2 in-memory database
