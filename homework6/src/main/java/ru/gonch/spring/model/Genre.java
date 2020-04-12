@@ -1,14 +1,25 @@
 package ru.gonch.spring.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedSubgraph;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Set;
 
 @Entity
 @Table(name = "genres")
+@NamedEntityGraph(
+        name = "graph.genre.books",
+        attributeNodes = @NamedAttributeNode(value = "books", subgraph = "book.comments"),
+        subgraphs = @NamedSubgraph(name = "book.comments", attributeNodes = @NamedAttributeNode("comments"))
+)
 public class Genre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +28,9 @@ public class Genre {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "genreId")
+    private Set<Book> books;
 
     public Genre() {
         // Default constructor for jpa
@@ -43,11 +57,16 @@ public class Genre {
         return name;
     }
 
+    public Set<Book> getBooks() {
+        return books;
+    }
+
     @Override
     public String toString() {
         return "Genre{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", books=" + books +
                 '}';
     }
 }

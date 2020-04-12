@@ -27,31 +27,9 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public List<Book> getAll(int limit, int offset) {
-        return em.createQuery(getAllBooksSql(), Book.class)
-                .setHint("javax.persistence.fetchgraph", em.getEntityGraph("genre-author-books-graph"))
-                .setMaxResults(limit)
-                .setFirstResult(offset)
-                .getResultList();
-    }
-
-    @Override
-    public List<Book> getBooksByGenreId(long genreId, int limit, int offset) {
-        return em.createQuery(getAllBooksSql() + " where g.id=:genreId", Book.class)
-                .setHint("javax.persistence.fetchgraph", em.getEntityGraph("genre-author-books-graph"))
-                .setParameter("genreId", genreId)
-                .setMaxResults(limit)
-                .setFirstResult(offset)
-                .getResultList();
-    }
-
-    @Override
-    public List<Book> getBooksByAuthorId(long authorId, int limit, int offset) {
-        return em.createQuery(getAllBooksSql() + " where a.id=:authorId", Book.class)
-                .setHint("javax.persistence.fetchgraph", em.getEntityGraph("genre-author-books-graph"))
-                .setParameter("authorId", authorId)
-                .setMaxResults(limit)
-                .setFirstResult(offset)
+    public List<Book> getAll() {
+        return em.createQuery("select b from Book b left join fetch b.comments", Book.class)
+                .setHint("javax.persistence.fetchgraph", em.getEntityGraph("comments-book-graph"))
                 .getResultList();
     }
 
@@ -59,8 +37,8 @@ public class BookRepositoryImpl implements BookRepository {
     public Optional<Book> getById(long id) {
         try {
             return Optional.of(
-                    em.createQuery(getAllBooksSql() + " where b.id=:id", Book.class)
-                            .setHint("javax.persistence.fetchgraph", em.getEntityGraph("genre-author-books-graph"))
+                    em.createQuery("select b from Book b left join fetch b.comments where b.id=:id", Book.class)
+                            .setHint("javax.persistence.fetchgraph", em.getEntityGraph("comments-book-graph"))
                             .setParameter("id", id)
                             .getSingleResult()
             );
@@ -72,23 +50,23 @@ public class BookRepositoryImpl implements BookRepository {
     @Transactional
     @Override
     public int update(Book book) {
-        return em.createQuery("update Book b set name=:name,genre_id=:genreId,author_id=:authorId where b.id=:id")
-                .setParameter("name", book.getName())
-                .setParameter("genreId", book.getGenre().getId())
-                .setParameter("authorId", book.getAuthor().getId())
-                .setParameter("id", book.getId())
-                .executeUpdate();
+        if (em.find(Book.class, book.getId()) != null) {
+            em.merge(book);
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     @Transactional
     @Override
     public int deleteById(long id) {
-        return em.createQuery("delete from Book b where b.id=:id")
-                .setParameter("id", id)
-                .executeUpdate();
-    }
-
-    private static String getAllBooksSql() {
-        return "select b from Book b inner join fetch b.genre g inner join fetch b.author a";
+        Book book = em.find(Book.class, id);
+        if (book != null) {
+            em.remove(book);
+            return 1;
+        } else {
+            return 0;
+        }
     }
 }

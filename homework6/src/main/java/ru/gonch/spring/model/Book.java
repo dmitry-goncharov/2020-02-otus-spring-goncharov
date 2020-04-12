@@ -6,18 +6,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Set;
 
 @Entity
 @Table(name = "books")
-@NamedEntityGraph(name = "genre-author-books-graph", attributeNodes = {
-        @NamedAttributeNode("genre"),
-        @NamedAttributeNode("author")
-})
+@NamedEntityGraph(name = "comments-book-graph", attributeNodes = @NamedAttributeNode("comments"))
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,27 +24,28 @@ public class Book {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToOne(targetEntity = Genre.class, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "genre_id")
-    private Genre genre;
+    @Column(name = "genre_id")
+    private long genreId;
 
-    @OneToOne(targetEntity = Author.class, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "author_id")
-    private Author author;
+    @Column(name = "author_id")
+    private long authorId;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bookId")
+    private Set<Comment> comments;
 
     public Book() {
         // Default constructor for jpa
     }
 
-    public Book(String name, Genre genre, Author author) {
-        this(0L, name, genre, author);
+    public Book(String name, long genreId, long authorId) {
+        this(0L, name, genreId, authorId);
     }
 
-    public Book(long id, String name, Genre genre, Author author) {
+    public Book(long id, String name, long genreId, long authorId) {
         this.id = id;
         this.name = name;
-        this.genre = genre;
-        this.author = author;
+        this.genreId = genreId;
+        this.authorId = authorId;
     }
 
     public long getId() {
@@ -58,12 +56,16 @@ public class Book {
         return name;
     }
 
-    public Genre getGenre() {
-        return genre;
+    public long getGenreId() {
+        return genreId;
     }
 
-    public Author getAuthor() {
-        return author;
+    public long getAuthorId() {
+        return authorId;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
     }
 
     @Override
@@ -71,8 +73,9 @@ public class Book {
         return "Book{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", genre=" + genre +
-                ", author=" + author +
+                ", genreId=" + genreId +
+                ", authorId=" + authorId +
+                ", comments=" + comments +
                 '}';
     }
 }

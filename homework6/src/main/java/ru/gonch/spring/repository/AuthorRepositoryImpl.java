@@ -27,10 +27,9 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     }
 
     @Override
-    public List<Author> getAll(int limit, int offset) {
-        return em.createQuery("select a from Author a", Author.class)
-                .setMaxResults(limit)
-                .setFirstResult(offset)
+    public List<Author> getAll() {
+        return em.createQuery("select a from Author a left join fetch a.books", Author.class)
+                .setHint("javax.persistence.fetchgraph", em.getEntityGraph("graph.author.books"))
                 .getResultList();
     }
 
@@ -38,7 +37,8 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     public Optional<Author> getById(long id) {
         try {
             return Optional.of(
-                    em.createQuery("select a from Author a where a.id=:id", Author.class)
+                    em.createQuery("select a from Author a left join fetch a.books where a.id=:id", Author.class)
+                            .setHint("javax.persistence.fetchgraph", em.getEntityGraph("graph.author.books"))
                             .setParameter("id", id)
                             .getSingleResult()
             );
@@ -50,17 +50,23 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     @Transactional
     @Override
     public int update(Author author) {
-        return em.createQuery("update Author a set a.name=:name where a.id=:id")
-                .setParameter("name", author.getName())
-                .setParameter("id", author.getId())
-                .executeUpdate();
+        if (em.find(Author.class, author.getId()) != null) {
+            em.merge(author);
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     @Transactional
     @Override
     public int deleteById(long id) {
-        return em.createQuery("delete from Author a where a.id=:id")
-                .setParameter("id", id)
-                .executeUpdate();
+        Author author = em.find(Author.class, id);
+        if (author != null) {
+            em.remove(author);
+            return 1;
+        } else {
+            return 0;
+        }
     }
 }

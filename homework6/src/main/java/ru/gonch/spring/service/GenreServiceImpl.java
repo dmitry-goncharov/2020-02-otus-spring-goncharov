@@ -21,8 +21,8 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public List<Genre> getAll(int limit, int offset) {
-        return genreRepository.getAll(limit, offset);
+    public List<Genre> getAll() {
+        return genreRepository.getAll();
     }
 
     @Override

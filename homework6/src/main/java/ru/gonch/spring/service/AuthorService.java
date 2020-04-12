@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface AuthorService {
     long save(Author author);
 
-    List<Author> getAll(int limit, int offset);
+    List<Author> getAll();
 
     Optional<Author> getById(long id);
 

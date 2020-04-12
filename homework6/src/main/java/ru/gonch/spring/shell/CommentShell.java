@@ -35,11 +35,9 @@ public class CommentShell {
         return String.format("Comment: %s", comment.isPresent() ? comment.get() : "none");
     }
 
-    @ShellMethod(value = "Get comments by book id", key = {"get-comments-by-book"})
-    public String getComments(@ShellOption long bookId,
-                              @ShellOption int limit,
-                              @ShellOption int offset) {
-        List<Comment> comments = commentService.getCommentsByBookId(bookId, limit, offset);
+    @ShellMethod(value = "Get all comments", key = {"get-comments"})
+    public String getComments() {
+        List<Comment> comments = commentService.getAll();
         return String.format("Comments: %s", comments);
     }
 

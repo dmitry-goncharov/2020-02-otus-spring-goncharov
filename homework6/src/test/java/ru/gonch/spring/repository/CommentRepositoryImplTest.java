@@ -36,32 +36,19 @@ class CommentRepositoryImplTest {
     }
 
     @Test
-    void geCommentsByBookIdTest() {
-        List<Comment> comments = commentRepository.getCommentsByBookId(1L, 10, 0);
+    void geAllTest() {
+        List<Comment> comments = commentRepository.getAll();
 
-        assertEquals(2, comments.size());
+        assertEquals(3, comments.size());
         assertEquals("From1", comments.get(0).getName());
         assertEquals("Comment1", comments.get(0).getComment());
+        assertEquals(1L, comments.get(0).getBookId());
         assertEquals("From1", comments.get(1).getName());
         assertEquals("Comment2", comments.get(1).getComment());
-    }
-
-    @Test
-    void getCommentsByBookIdWithLimitTest() {
-        List<Comment> comments = commentRepository.getCommentsByBookId(1L, 1, 0);
-
-        assertEquals(1, comments.size());
-        assertEquals("From1", comments.get(0).getName());
-        assertEquals("Comment1", comments.get(0).getComment());
-    }
-
-    @Test
-    void getCommentsByBookIdWithLimitAndOffsetTest() {
-        List<Comment> comments = commentRepository.getCommentsByBookId(1L, 1, 1);
-
-        assertEquals(1, comments.size());
-        assertEquals("From1", comments.get(0).getName());
-        assertEquals("Comment2", comments.get(0).getComment());
+        assertEquals(1L, comments.get(1).getBookId());
+        assertEquals("From1", comments.get(2).getName());
+        assertEquals("Comment1", comments.get(2).getComment());
+        assertEquals(2L, comments.get(2).getBookId());
     }
 
     @Test

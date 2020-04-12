@@ -41,6 +41,6 @@
 - Simple Library Program
 - Scheme and data files are stored in resources
 - Used spring boot
-- Used spring data jpa with hibernate
+- Used JPA with Hibernate
 - Used spring shell
 - Used H2 in-memory database

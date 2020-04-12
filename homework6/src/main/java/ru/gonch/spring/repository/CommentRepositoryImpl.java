@@ -27,11 +27,8 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public List<Comment> getCommentsByBookId(long bookId, int limit, int offset) {
-        return em.createQuery("select c from Comment c where c.bookId=:bookId", Comment.class)
-                .setParameter("bookId", bookId)
-                .setMaxResults(limit)
-                .setFirstResult(offset)
+    public List<Comment> getAll() {
+        return em.createQuery("select c from Comment c", Comment.class)
                 .getResultList();
     }
 
@@ -51,19 +48,23 @@ public class CommentRepositoryImpl implements CommentRepository {
     @Transactional
     @Override
     public int update(Comment comment) {
-        return em.createQuery("update Comment c set c.name=:name,c.comment=:comment,c.bookId=:bookId where c.id=:id")
-                .setParameter("name", comment.getName())
-                .setParameter("comment", comment.getComment())
-                .setParameter("bookId", comment.getBookId())
-                .setParameter("id", comment.getId())
-                .executeUpdate();
+        if (em.find(Comment.class, comment.getId()) != null) {
+            em.merge(comment);
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     @Transactional
     @Override
     public int deleteById(long id) {
-        return em.createQuery("delete from Comment c where c.id=:id")
-                .setParameter("id", id)
-                .executeUpdate();
+        Comment comment = em.find(Comment.class, id);
+        if (comment != null) {
+            em.remove(comment);
+            return 1;
+        } else {
+            return 0;
+        }
     }
 }

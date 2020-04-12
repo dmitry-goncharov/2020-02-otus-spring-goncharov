@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface GenreRepository {
     long save(Genre genre);
 
-    List<Genre> getAll(int limit, int offset);
+    List<Genre> getAll();
 
     Optional<Genre> getById(long id);
 

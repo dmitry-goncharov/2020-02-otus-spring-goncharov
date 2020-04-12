@@ -30,9 +30,8 @@ public class AuthorShell {
     }
 
     @ShellMethod(value = "Get all authors", key = {"get-authors"})
-    public String getAuthors(@ShellOption int limit,
-                             @ShellOption int offset) {
-        List<Author> authors = authorService.getAll(limit, offset);
+    public String getAuthors() {
+        List<Author> authors = authorService.getAll();
         return String.format("Authors: %s", authors);
     }
 

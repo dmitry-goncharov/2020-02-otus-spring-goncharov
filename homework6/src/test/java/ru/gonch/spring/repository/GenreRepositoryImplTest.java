@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.gonch.spring.model.Genre;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,32 +48,32 @@ class GenreRepositoryImplTest {
 
     @Test
     void getAllTest() {
-        List<Genre> genres = genreRepository.getAll(10, 0);
+        List<Genre> genres = genreRepository.getAll();
 
         assertEquals(5, genres.size());
-        assertEquals("Novel", genres.get(0).getName());
-        assertEquals("Story", genres.get(1).getName());
-        assertEquals("Prose", genres.get(2).getName());
-        assertEquals("Novelette", genres.get(3).getName());
-        assertEquals("Piece", genres.get(4).getName());
-    }
 
-    @Test
-    void getAllWithLimitTest() {
-        List<Genre> genres = genreRepository.getAll(2, 0);
+        Genre genre1 = genres.get(0);
+        assertEquals("Novel", genre1.getName());
+        assertEquals(1, genre1.getBooks().size());
+        assertEquals(2, new ArrayList<>(genre1.getBooks()).get(0).getComments().size());
 
-        assertEquals(2, genres.size());
-        assertEquals("Novel", genres.get(0).getName());
-        assertEquals("Story", genres.get(1).getName());
-    }
+        Genre genre2 = genres.get(1);
+        assertEquals("Story", genre2.getName());
+        assertEquals(1, genre2.getBooks().size());
+        assertEquals(0, new ArrayList<>(genre2.getBooks()).get(0).getComments().size());
 
-    @Test
-    void getAllWithLimitAndOffsetTest() {
-        List<Genre> genres = genreRepository.getAll(2, 3);
+        Genre genre3 = genres.get(2);
+        assertEquals("Prose", genre3.getName());
+        assertEquals(0, genre3.getBooks().size());
 
-        assertEquals(2, genres.size());
-        assertEquals("Novelette", genres.get(0).getName());
-        assertEquals("Piece", genres.get(1).getName());
+        Genre genre4 = genres.get(3);
+        assertEquals("Novelette", genre4.getName());
+        assertEquals(0, genre4.getBooks().size());
+
+        Genre genre5 = genres.get(4);
+        assertEquals("Piece", genre5.getName());
+        assertEquals(1, genre5.getBooks().size());
+        assertEquals(1, new ArrayList<>(genre5.getBooks()).get(0).getComments().size());
     }
 
     @Test
@@ -81,6 +82,7 @@ class GenreRepositoryImplTest {
 
         assertTrue(genre.isPresent());
         assertEquals("Prose", genre.get().getName());
+        assertEquals(0, genre.get().getBooks().size());
     }
 
     @Test

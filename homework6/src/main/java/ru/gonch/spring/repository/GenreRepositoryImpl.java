@@ -27,10 +27,9 @@ public class GenreRepositoryImpl implements GenreRepository {
     }
 
     @Override
-    public List<Genre> getAll(int limit, int offset) {
-        return em.createQuery("select g from Genre g", Genre.class)
-                .setMaxResults(limit)
-                .setFirstResult(offset)
+    public List<Genre> getAll() {
+        return em.createQuery("select g from Genre g left join fetch g.books", Genre.class)
+                .setHint("javax.persistence.fetchgraph", em.getEntityGraph("graph.genre.books"))
                 .getResultList();
     }
 
@@ -38,7 +37,8 @@ public class GenreRepositoryImpl implements GenreRepository {
     public Optional<Genre> getById(long id) {
         try {
             return Optional.of(
-                    em.createQuery("select g from Genre g where g.id=:id", Genre.class)
+                    em.createQuery("select g from Genre g left join fetch g.books b where g.id=:id", Genre.class)
+                            .setHint("javax.persistence.fetchgraph", em.getEntityGraph("graph.genre.books"))
                             .setParameter("id", id)
                             .getSingleResult()
             );
@@ -50,17 +50,23 @@ public class GenreRepositoryImpl implements GenreRepository {
     @Transactional
     @Override
     public int update(Genre genre) {
-        return em.createQuery("update Genre g set g.name=:name where g.id=:id")
-                .setParameter("name", genre.getName())
-                .setParameter("id", genre.getId())
-                .executeUpdate();
+        if (em.find(Genre.class, genre.getId()) != null) {
+            em.merge(genre);
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     @Transactional
     @Override
     public int deleteById(long id) {
-        return em.createQuery("delete from Genre g where g.id=:id")
-                .setParameter("id", id)
-                .executeUpdate();
+        Genre genre = em.find(Genre.class, id);
+        if (genre != null) {
+            em.remove(genre);
+            return 1;
+        } else {
+            return 0;
+        }
     }
 }

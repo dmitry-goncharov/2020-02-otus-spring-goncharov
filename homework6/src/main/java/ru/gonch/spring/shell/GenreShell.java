@@ -30,9 +30,8 @@ public class GenreShell {
     }
 
     @ShellMethod(value = "Get all genres", key = {"get-genres"})
-    public String getGenres(@ShellOption int limit,
-                            @ShellOption int offset) {
-        List<Genre> genres = genreService.getAll(limit, offset);
+    public String getGenres() {
+        List<Genre> genres = genreService.getAll();
         return String.format("Genres: %s", genres);
     }
 

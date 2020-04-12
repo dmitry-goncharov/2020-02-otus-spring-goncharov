@@ -5,9 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
-import ru.gonch.spring.model.Author;
 import ru.gonch.spring.model.Book;
-import ru.gonch.spring.model.Genre;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +25,7 @@ class BookRepositoryImplTest {
 
     @Test
     void insertTest() {
-        Book newBook = new Book("Test Book", em.find(Genre.class, 1L), em.find(Author.class, 1L));
+        Book newBook = new Book("Test Book", 1L, 1L);
         long id = bookRepository.save(newBook);
 
         assertTrue(id > 0);
@@ -36,73 +34,21 @@ class BookRepositoryImplTest {
 
     @Test
     void getAllTest() {
-        List<Book> books = bookRepository.getAll(10, 0);
+        List<Book> books = bookRepository.getAll();
 
         assertEquals(3, books.size());
-        assertEquals("Eugene Onegin", books.get(0).getName());
-        assertEquals("The Cherry Orchard", books.get(1).getName());
-        assertEquals("Don stories", books.get(2).getName());
-    }
 
-    @Test
-    void getAllWithLimitTest() {
-        List<Book> books = bookRepository.getAll(2, 0);
+        Book book1 = books.get(0);
+        assertEquals("Eugene Onegin", book1.getName());
+        assertEquals(2, book1.getComments().size());
 
-        assertEquals(2, books.size());
-        assertEquals("Eugene Onegin", books.get(0).getName());
-        assertEquals("The Cherry Orchard", books.get(1).getName());
-    }
+        Book book2 = books.get(1);
+        assertEquals("The Cherry Orchard", book2.getName());
+        assertEquals(1, book2.getComments().size());
 
-    @Test
-    void getAllWithLimitAndOffsetTest() {
-        List<Book> books = bookRepository.getAll(1, 2);
-
-        assertEquals(1, books.size());
-        assertEquals("Don stories", books.get(0).getName());
-    }
-
-    @Test
-    void getBooksByGenreId() {
-        List<Book> books = bookRepository.getBooksByGenreId(1, 10, 0);
-
-        assertEquals(1, books.size());
-    }
-
-    @Test
-    void getBooksByGenreIdWithLimitTest() {
-        List<Book> books = bookRepository.getBooksByGenreId(1, 2, 0);
-
-        assertEquals(1, books.size());
-        assertEquals("Eugene Onegin", books.get(0).getName());
-    }
-
-    @Test
-    void getBooksByGenreIdWithLimitAndOffsetTest() {
-        List<Book> books = bookRepository.getBooksByGenreId(1, 10, 2);
-
-        assertEquals(0, books.size());
-    }
-
-    @Test
-    void getBooksByAuthorIdTest() {
-        List<Book> books = bookRepository.getBooksByAuthorId(1, 10, 0);
-
-        assertEquals(1, books.size());
-    }
-
-    @Test
-    void getBooksByAuthorIdWithLimitTest() {
-        List<Book> books = bookRepository.getBooksByAuthorId(1, 2, 0);
-
-        assertEquals(1, books.size());
-        assertEquals("Eugene Onegin", books.get(0).getName());
-    }
-
-    @Test
-    void getBooksByAuthorIdWithLimitAndOffsetTest() {
-        List<Book> books = bookRepository.getBooksByAuthorId(1, 10, 2);
-
-        assertEquals(0, books.size());
+        Book book3 = books.get(2);
+        assertEquals("Don stories", book3.getName());
+        assertEquals(0, book3.getComments().size());
     }
 
     @Test
@@ -111,6 +57,7 @@ class BookRepositoryImplTest {
 
         assertTrue(book.isPresent());
         assertEquals("Don stories", book.get().getName());
+        assertEquals(0, book.get().getComments().size());
     }
 
     @Test
@@ -118,7 +65,7 @@ class BookRepositoryImplTest {
         Book book = em.find(Book.class, 1L);
         em.detach(book);
 
-        bookRepository.update(new Book(book.getId(), "A.S.Pushkin Eugene Onegin", book.getGenre(), book.getAuthor()));
+        bookRepository.update(new Book(book.getId(), "A.S.Pushkin Eugene Onegin", book.getGenreId(), book.getAuthorId()));
 
         assertEquals("A.S.Pushkin Eugene Onegin", em.find(Book.class, book.getId()).getName());
     }

@@ -31,18 +31,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> getAll(int limit, int offset) {
-        return bookRepository.getAll(limit, offset);
-    }
-
-    @Override
-    public List<Book> getBooksByGenreId(long genreId, int limit, int offset) {
-        return bookRepository.getBooksByGenreId(genreId, limit, offset);
-    }
-
-    @Override
-    public List<Book> getBooksByAuthorId(long authorId, int limit, int offset) {
-        return bookRepository.getBooksByAuthorId(authorId, limit, offset);
+    public List<Book> getAll() {
+        return bookRepository.getAll();
     }
 
     @Override
@@ -63,13 +53,13 @@ public class BookServiceImpl implements BookService {
     }
 
     private void checkAuthorIdNonEmpty(Book book) {
-        if (authorRepository.getById(book.getAuthor().getId()).isEmpty()) {
+        if (authorRepository.getById(book.getAuthorId()).isEmpty()) {
             throw new IllegalArgumentException("Incorrect author id");
         }
     }
 
     private void checkGenreIdNonEmpty(Book book) {
-        if (genreRepository.getById(book.getGenre().getId()).isEmpty()) {
+        if (genreRepository.getById(book.getGenreId()).isEmpty()) {
             throw new IllegalArgumentException("Incorrect genre id");
         }
     }

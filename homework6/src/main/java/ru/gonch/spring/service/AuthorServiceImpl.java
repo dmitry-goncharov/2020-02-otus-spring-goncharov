@@ -21,8 +21,8 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<Author> getAll(int limit, int offset) {
-        return authorRepository.getAll(limit, offset);
+    public List<Author> getAll() {
+        return authorRepository.getAll();
     }
 
     @Override
