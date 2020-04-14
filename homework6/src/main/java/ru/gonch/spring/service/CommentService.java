@@ -10,6 +10,8 @@ public interface CommentService {
 
     List<Comment> getAll();
 
+    List<Comment> getCommentsByBookId(long bookId);
+
     Optional<Comment> getById(long id);
 
     boolean update(Comment comment);

@@ -8,17 +8,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
-import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "genres")
 @NamedEntityGraph(
         name = "graph.genre.books",
-        attributeNodes = @NamedAttributeNode(value = "books", subgraph = "book.comments"),
-        subgraphs = @NamedSubgraph(name = "book.comments", attributeNodes = @NamedAttributeNode("comments"))
+        attributeNodes = @NamedAttributeNode(value = "books")
 )
 public class Genre {
     @Id
@@ -30,7 +28,7 @@ public class Genre {
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "genreId")
-    private Set<Book> books;
+    private List<Book> books;
 
     public Genre() {
         // Default constructor for jpa
@@ -57,7 +55,7 @@ public class Genre {
         return name;
     }
 
-    public Set<Book> getBooks() {
+    public List<Book> getBooks() {
         return books;
     }
 

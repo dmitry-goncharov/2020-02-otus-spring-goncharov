@@ -7,8 +7,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.gonch.spring.model.Author;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,7 +41,6 @@ class AuthorRepositoryImplTest {
         Author author1 = authors.get(0);
         assertEquals("Pushkin", author1.getName());
         assertEquals(1, author1.getBooks().size());
-        assertEquals(2, new ArrayList<>(author1.getBooks()).get(0).getComments().size());
 
         Author author2 = authors.get(1);
         assertEquals("Turgenev", author2.getName());
@@ -56,12 +53,10 @@ class AuthorRepositoryImplTest {
         Author author4 = authors.get(3);
         assertEquals("Chekhov", author4.getName());
         assertEquals(1, author4.getBooks().size());
-        assertEquals(1, new ArrayList<>(author4.getBooks()).get(0).getComments().size());
 
         Author author5 = authors.get(4);
         assertEquals("Sholokhov", author5.getName());
         assertEquals(1, author5.getBooks().size());
-        assertEquals(0, new ArrayList<>(author5.getBooks()).get(0).getComments().size());
     }
 
     @Test

@@ -41,6 +41,18 @@ public class BookShell {
         return String.format("Books: %s", books);
     }
 
+    @ShellMethod(value = "Get all books by genre id", key = {"get-books-by-genre"})
+    public String getBooksByGenre(@ShellOption long genreId) {
+        List<Book> books = bookService.getBooksByGenreId(genreId);
+        return String.format("Books: %s", books);
+    }
+
+    @ShellMethod(value = "Get all books by author id", key = {"get-books-by-author"})
+    public String getBooksByAuthor(@ShellOption long authorId) {
+        List<Book> books = bookService.getBooksByAuthorId(authorId);
+        return String.format("Books: %s", books);
+    }
+
     @ShellMethod(value = "Update book by id", key = {"upd-book"})
     public String updateBook(@ShellOption long id,
                              @ShellOption String name,

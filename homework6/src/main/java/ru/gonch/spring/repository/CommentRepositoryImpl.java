@@ -33,6 +33,13 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
+    public List<Comment> getCommentsByBookId(long bookId) {
+        return em.createQuery("select c from Comment c where c.bookId=:bookId", Comment.class)
+                .setParameter("bookId", bookId)
+                .getResultList();
+    }
+
+    @Override
     public Optional<Comment> getById(long id) {
         try {
             return Optional.of(

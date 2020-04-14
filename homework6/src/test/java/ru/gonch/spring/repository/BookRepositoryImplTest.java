@@ -37,18 +37,9 @@ class BookRepositoryImplTest {
         List<Book> books = bookRepository.getAll();
 
         assertEquals(3, books.size());
-
-        Book book1 = books.get(0);
-        assertEquals("Eugene Onegin", book1.getName());
-        assertEquals(2, book1.getComments().size());
-
-        Book book2 = books.get(1);
-        assertEquals("The Cherry Orchard", book2.getName());
-        assertEquals(1, book2.getComments().size());
-
-        Book book3 = books.get(2);
-        assertEquals("Don stories", book3.getName());
-        assertEquals(0, book3.getComments().size());
+        assertEquals("Eugene Onegin", books.get(0).getName());
+        assertEquals("The Cherry Orchard", books.get(1).getName());
+        assertEquals("Don stories", books.get(2).getName());
     }
 
     @Test
@@ -57,7 +48,6 @@ class BookRepositoryImplTest {
 
         assertTrue(book.isPresent());
         assertEquals("Don stories", book.get().getName());
-        assertEquals(0, book.get().getComments().size());
     }
 
     @Test

@@ -1,11 +1,14 @@
 package ru.gonch.spring.service;
 
 import org.springframework.stereotype.Service;
+import ru.gonch.spring.model.Author;
 import ru.gonch.spring.model.Book;
+import ru.gonch.spring.model.Genre;
 import ru.gonch.spring.repository.AuthorRepository;
 import ru.gonch.spring.repository.BookRepository;
 import ru.gonch.spring.repository.GenreRepository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +36,16 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> getAll() {
         return bookRepository.getAll();
+    }
+
+    @Override
+    public List<Book> getBooksByGenreId(long genreId) {
+        return genreRepository.getById(genreId).map(Genre::getBooks).orElse(Collections.emptyList());
+    }
+
+    @Override
+    public List<Book> getBooksByAuthorId(long authorId) {
+        return authorRepository.getById(authorId).map(Author::getBooks).orElse(Collections.emptyList());
     }
 
     @Override

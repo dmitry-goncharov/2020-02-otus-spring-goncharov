@@ -41,6 +41,13 @@ public class CommentShell {
         return String.format("Comments: %s", comments);
     }
 
+    @ShellMethod(value = "Get all comments by book id", key = {"get-comments-by-book"})
+    public String getCommentsByBook(@ShellOption long bookId) {
+        List<Comment> comments = commentService.getCommentsByBookId(bookId);
+        return String.format("Comments: %s", comments);
+    }
+
+
     @ShellMethod(value = "Update comment by id", key = {"upd-comment"})
     public String updateComment(@ShellOption long id,
                                 @ShellOption String name,

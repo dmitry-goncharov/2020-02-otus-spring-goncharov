@@ -10,6 +10,10 @@ public interface BookService {
 
     List<Book> getAll();
 
+    List<Book> getBooksByGenreId(long genreId);
+
+    List<Book> getBooksByAuthorId(long authorId);
+
     Optional<Book> getById(long id);
 
     boolean update(Book book);

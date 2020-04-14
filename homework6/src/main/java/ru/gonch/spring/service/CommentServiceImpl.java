@@ -31,6 +31,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public List<Comment> getCommentsByBookId(long bookId) {
+        return commentRepository.getCommentsByBookId(bookId);
+    }
+
+    @Override
     public Optional<Comment> getById(long id) {
         return commentRepository.getById(id);
     }

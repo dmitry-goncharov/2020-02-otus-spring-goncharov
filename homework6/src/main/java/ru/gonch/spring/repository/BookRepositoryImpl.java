@@ -28,8 +28,7 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public List<Book> getAll() {
-        return em.createQuery("select b from Book b left join fetch b.comments", Book.class)
-                .setHint("javax.persistence.fetchgraph", em.getEntityGraph("comments-book-graph"))
+        return em.createQuery("select b from Book b", Book.class)
                 .getResultList();
     }
 
@@ -37,8 +36,7 @@ public class BookRepositoryImpl implements BookRepository {
     public Optional<Book> getById(long id) {
         try {
             return Optional.of(
-                    em.createQuery("select b from Book b left join fetch b.comments where b.id=:id", Book.class)
-                            .setHint("javax.persistence.fetchgraph", em.getEntityGraph("comments-book-graph"))
+                    em.createQuery("select b from Book b where b.id=:id", Book.class)
                             .setParameter("id", id)
                             .getSingleResult()
             );
