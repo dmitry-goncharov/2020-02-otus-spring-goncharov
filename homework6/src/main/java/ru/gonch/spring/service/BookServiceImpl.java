@@ -1,9 +1,9 @@
 package ru.gonch.spring.service;
 
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
-import ru.gonch.spring.model.Author;
+import org.springframework.transaction.annotation.Transactional;
 import ru.gonch.spring.model.Book;
-import ru.gonch.spring.model.Genre;
 import ru.gonch.spring.repository.AuthorRepository;
 import ru.gonch.spring.repository.BookRepository;
 import ru.gonch.spring.repository.GenreRepository;
@@ -38,14 +38,22 @@ public class BookServiceImpl implements BookService {
         return bookRepository.getAll();
     }
 
+    @Transactional
     @Override
     public List<Book> getBooksByGenreId(long genreId) {
-        return genreRepository.getById(genreId).map(Genre::getBooks).orElse(Collections.emptyList());
+        return genreRepository.getById(genreId).map(genre -> {
+            Hibernate.initialize(genre.getBooks());
+            return genre.getBooks();
+        }).orElse(Collections.emptyList());
     }
 
+    @Transactional
     @Override
     public List<Book> getBooksByAuthorId(long authorId) {
-        return authorRepository.getById(authorId).map(Author::getBooks).orElse(Collections.emptyList());
+        return authorRepository.getById(authorId).map(author -> {
+            Hibernate.initialize(author.getBooks());
+            return author.getBooks();
+        }).orElse(Collections.emptyList());
     }
 
     @Override

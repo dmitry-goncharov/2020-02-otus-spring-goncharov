@@ -10,8 +10,6 @@ public interface CommentRepository {
 
     List<Comment> getAll();
 
-    List<Comment> getCommentsByBookId(long bookId);
-
     Optional<Comment> getById(long id);
 
     int update(Comment comment);

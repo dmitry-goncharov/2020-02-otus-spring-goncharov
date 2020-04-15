@@ -37,26 +37,11 @@ class AuthorRepositoryImplTest {
         List<Author> authors = authorRepository.getAll();
 
         assertEquals(5, authors.size());
-
-        Author author1 = authors.get(0);
-        assertEquals("Pushkin", author1.getName());
-        assertEquals(1, author1.getBooks().size());
-
-        Author author2 = authors.get(1);
-        assertEquals("Turgenev", author2.getName());
-        assertEquals(0, author2.getBooks().size());
-
-        Author author3 = authors.get(2);
-        assertEquals("Dostoevsky", author3.getName());
-        assertEquals(0, author3.getBooks().size());
-
-        Author author4 = authors.get(3);
-        assertEquals("Chekhov", author4.getName());
-        assertEquals(1, author4.getBooks().size());
-
-        Author author5 = authors.get(4);
-        assertEquals("Sholokhov", author5.getName());
-        assertEquals(1, author5.getBooks().size());
+        assertEquals("Pushkin", authors.get(0).getName());
+        assertEquals("Turgenev", authors.get(1).getName());
+        assertEquals("Dostoevsky", authors.get(2).getName());
+        assertEquals("Chekhov", authors.get(3).getName());
+        assertEquals("Sholokhov", authors.get(4).getName());
     }
 
     @Test
@@ -65,7 +50,6 @@ class AuthorRepositoryImplTest {
 
         assertTrue(author.isPresent());
         assertEquals("Dostoevsky", author.get().getName());
-        assertEquals(0, author.get().getBooks().size());
     }
 
     @Test

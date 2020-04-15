@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.gonch.spring.model.Author;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
@@ -28,23 +27,12 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
     @Override
     public List<Author> getAll() {
-        return em.createQuery("select a from Author a left join fetch a.books", Author.class)
-                .setHint("javax.persistence.fetchgraph", em.getEntityGraph("graph.author.books"))
-                .getResultList();
+        return em.createQuery("select a from Author a", Author.class).getResultList();
     }
 
     @Override
     public Optional<Author> getById(long id) {
-        try {
-            return Optional.of(
-                    em.createQuery("select a from Author a left join fetch a.books where a.id=:id", Author.class)
-                            .setHint("javax.persistence.fetchgraph", em.getEntityGraph("graph.author.books"))
-                            .setParameter("id", id)
-                            .getSingleResult()
-            );
-        } catch (NoResultException e) {
-            return Optional.empty();
-        }
+        return Optional.ofNullable(em.find(Author.class, id));
     }
 
     @Transactional

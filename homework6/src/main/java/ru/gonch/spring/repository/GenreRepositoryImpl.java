@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.gonch.spring.model.Genre;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
@@ -28,23 +27,12 @@ public class GenreRepositoryImpl implements GenreRepository {
 
     @Override
     public List<Genre> getAll() {
-        return em.createQuery("select g from Genre g left join fetch g.books", Genre.class)
-                .setHint("javax.persistence.fetchgraph", em.getEntityGraph("graph.genre.books"))
-                .getResultList();
+        return em.createQuery("select g from Genre g", Genre.class).getResultList();
     }
 
     @Override
     public Optional<Genre> getById(long id) {
-        try {
-            return Optional.of(
-                    em.createQuery("select g from Genre g left join fetch g.books b where g.id=:id", Genre.class)
-                            .setHint("javax.persistence.fetchgraph", em.getEntityGraph("graph.genre.books"))
-                            .setParameter("id", id)
-                            .getSingleResult()
-            );
-        } catch (NoResultException e) {
-            return Optional.empty();
-        }
+        return Optional.ofNullable(em.find(Genre.class, id));
     }
 
     @Transactional

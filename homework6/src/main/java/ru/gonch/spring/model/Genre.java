@@ -6,18 +6,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
 
 @Entity
 @Table(name = "genres")
-@NamedEntityGraph(
-        name = "graph.genre.books",
-        attributeNodes = @NamedAttributeNode(value = "books")
-)
 public class Genre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -64,7 +58,6 @@ public class Genre {
         return "Genre{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", books=" + books +
                 '}';
     }
 }

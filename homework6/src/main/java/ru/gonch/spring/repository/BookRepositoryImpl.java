@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.gonch.spring.model.Book;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
@@ -28,21 +27,12 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public List<Book> getAll() {
-        return em.createQuery("select b from Book b", Book.class)
-                .getResultList();
+        return em.createQuery("select b from Book b", Book.class).getResultList();
     }
 
     @Override
     public Optional<Book> getById(long id) {
-        try {
-            return Optional.of(
-                    em.createQuery("select b from Book b where b.id=:id", Book.class)
-                            .setParameter("id", id)
-                            .getSingleResult()
-            );
-        } catch (NoResultException e) {
-            return Optional.empty();
-        }
+        return Optional.ofNullable(em.find(Book.class, id));
     }
 
     @Transactional

@@ -50,26 +50,11 @@ class GenreRepositoryImplTest {
         List<Genre> genres = genreRepository.getAll();
 
         assertEquals(5, genres.size());
-
-        Genre genre1 = genres.get(0);
-        assertEquals("Novel", genre1.getName());
-        assertEquals(1, genre1.getBooks().size());
-
-        Genre genre2 = genres.get(1);
-        assertEquals("Story", genre2.getName());
-        assertEquals(1, genre2.getBooks().size());
-
-        Genre genre3 = genres.get(2);
-        assertEquals("Prose", genre3.getName());
-        assertEquals(0, genre3.getBooks().size());
-
-        Genre genre4 = genres.get(3);
-        assertEquals("Novelette", genre4.getName());
-        assertEquals(0, genre4.getBooks().size());
-
-        Genre genre5 = genres.get(4);
-        assertEquals("Piece", genre5.getName());
-        assertEquals(1, genre5.getBooks().size());
+        assertEquals("Novel", genres.get(0).getName());
+        assertEquals("Story", genres.get(1).getName());
+        assertEquals("Prose", genres.get(2).getName());
+        assertEquals("Novelette", genres.get(3).getName());
+        assertEquals("Piece", genres.get(4).getName());
     }
 
     @Test
@@ -78,7 +63,6 @@ class GenreRepositoryImplTest {
 
         assertTrue(genre.isPresent());
         assertEquals("Prose", genre.get().getName());
-        assertEquals(0, genre.get().getBooks().size());
     }
 
     @Test

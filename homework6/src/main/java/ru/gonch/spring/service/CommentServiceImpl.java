@@ -1,10 +1,13 @@
 package ru.gonch.spring.service;
 
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.gonch.spring.model.Comment;
 import ru.gonch.spring.repository.BookRepository;
 import ru.gonch.spring.repository.CommentRepository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,9 +33,13 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.getAll();
     }
 
+    @Transactional
     @Override
     public List<Comment> getCommentsByBookId(long bookId) {
-        return commentRepository.getCommentsByBookId(bookId);
+        return bookRepository.getById(bookId).map(book -> {
+            Hibernate.initialize(book.getComments());
+            return book.getComments();
+        }).orElse(Collections.emptyList());
     }
 
     @Override

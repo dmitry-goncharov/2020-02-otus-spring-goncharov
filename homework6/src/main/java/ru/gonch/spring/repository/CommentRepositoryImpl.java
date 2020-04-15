@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.gonch.spring.model.Comment;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
@@ -28,28 +27,12 @@ public class CommentRepositoryImpl implements CommentRepository {
 
     @Override
     public List<Comment> getAll() {
-        return em.createQuery("select c from Comment c", Comment.class)
-                .getResultList();
-    }
-
-    @Override
-    public List<Comment> getCommentsByBookId(long bookId) {
-        return em.createQuery("select c from Comment c where c.bookId=:bookId", Comment.class)
-                .setParameter("bookId", bookId)
-                .getResultList();
+        return em.createQuery("select c from Comment c", Comment.class).getResultList();
     }
 
     @Override
     public Optional<Comment> getById(long id) {
-        try {
-            return Optional.of(
-                    em.createQuery("select c from Comment c where c.id=:id", Comment.class)
-                            .setParameter("id", id)
-                            .getSingleResult()
-            );
-        } catch (NoResultException e) {
-            return Optional.empty();
-        }
+        return Optional.ofNullable(em.find(Comment.class, id));
     }
 
     @Transactional

@@ -52,17 +52,6 @@ class CommentRepositoryImplTest {
     }
 
     @Test
-    void geCommentsByBookIdTest() {
-        List<Comment> comments = commentRepository.getCommentsByBookId(1L);
-
-        assertEquals(2, comments.size());
-        assertEquals("From1", comments.get(0).getName());
-        assertEquals("Comment1", comments.get(0).getComment());
-        assertEquals("From1", comments.get(1).getName());
-        assertEquals("Comment2", comments.get(1).getComment());
-    }
-
-    @Test
     void getByIdTest() {
         Optional<Comment> comment = commentRepository.getById(3);
 

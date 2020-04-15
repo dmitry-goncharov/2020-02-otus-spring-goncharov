@@ -1,11 +1,14 @@
 package ru.gonch.spring.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 @Entity
 @Table(name = "books")
@@ -23,6 +26,9 @@ public class Book {
 
     @Column(name = "author_id")
     private long authorId;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bookId")
+    private List<Comment> comments;
 
     public Book() {
         // Default constructor for jpa
@@ -53,6 +59,10 @@ public class Book {
 
     public long getAuthorId() {
         return authorId;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
     }
 
     @Override
