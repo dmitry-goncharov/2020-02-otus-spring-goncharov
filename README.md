@@ -52,3 +52,10 @@
 - Used spring data JPA with Hibernate
 - Used spring shell
 - Used H2 in-memory database
+
+### Homework 8
+- Simple Library Program
+- Used spring boot
+- Used spring data JPA
+- Used spring shell
+- Used embedded Mongo database
