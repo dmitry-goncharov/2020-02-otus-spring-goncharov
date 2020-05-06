@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit comment</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}"/>
+</head>
+<body>
+
+<h2>
+    <a th:href="@{/book(genreID=${bookParams.genreID},authorID=${bookParams.authorID})}" href="index.html">Books</a> >
+    <a th:href="@{/comment(genreID=${bookParams.genreID},authorID=${bookParams.authorID},bookID=${bookParams.bookID})}" href="comment-list.html">Comments</a> >
+    Edit comment
+</h2>
+
+<div class="block">
+    <form class="block-content" action="#" method="post"
+          th:action="@{/comment/edit(genreID=${bookParams.genreID},authorID=${bookParams.authorID},bookID=${bookParams.bookID},id=${comment.id})}" th:object="${comment}">
+
+        <div class="row">
+            <label for="id-input">ID:</label>
+            <input id="id-input" type="text" readonly="readonly" th:field="${comment.id}"/>
+        </div>
+
+        <div class="row" th:if="${bookParams.bookID} == null">
+            <label for="book-input">Book:</label>
+            <select id="book-input" name="bookId">
+                <option th:each="book : ${books}" th:value="${book.id}" th:text="${book.name}">Book</option>
+            </select>
+        </div>
+        <div class="row" th:if="${bookParams.bookID} != null">
+            <input hidden="hidden" type="text" name="bookId" th:value="${bookParams.bookID}"/>
+        </div>
+
+        <div class="row">
+            <label for="name-input">From:</label>
+            <input id="name-input" type="text" th:field="${comment.name}"/>
+            <div class="error" th:if="${#fields.hasErrors('name')}" th:errors="${comment.name}">Error</div>
+        </div>
+
+        <div class="row">
+            <label for="text-input">Comment:</label>
+            <input id="text-input" type="text" th:field="${comment.text}"/>
+            <div class="error" th:if="${#fields.hasErrors('text')}" th:errors="${comment.text}">Error</div>
+        </div>
+
+        <div class="row">
+            <button type="submit">Save</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

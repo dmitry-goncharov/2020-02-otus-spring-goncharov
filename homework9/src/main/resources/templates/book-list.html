@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Books</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}"/>
+</head>
+<body>
+
+<h1>
+    <a th:href="@{/genre}" href="genre-list.html">Genres</a> |
+    <a th:href="@{/author}" href="author-list.html">Authors</a> |
+    <a th:href="@{/book}" href="book-list.html">Books</a>
+</h1>
+
+<h2 th:if="${bookParams.genreID} == null and ${bookParams.authorID} == null">All books</h2>
+<h2 th:if="${bookParams.genreID} != null">Books by genre "<span th:text="${genre.name}">Genre</span>"</h2>
+<h2 th:if="${bookParams.authorID} != null">Books by author "<span th:text="${author.name}">Author</span>"</h2>
+
+<div class="block">
+    <a th:href="@{/book/add(genreID=${bookParams.genreID},authorID=${bookParams.authorID})}" href="book-add.html">Add book</a>
+</div>
+
+<div class="block" th:if="!${books.isEmpty()}">
+    <table class="block-content">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book : ${books}">
+            <td th:text="${book.id}">1</td>
+            <td th:text="${book.name}">Novel</td>
+            <td>
+                <a th:href="@{/book/edit(genreID=${bookParams.genreID},authorID=${bookParams.authorID},bookID=${book.id})}" href="book-edit.html">Edit</a> |
+                <a th:href="@{/book/delete(genreID=${bookParams.genreID},authorID=${bookParams.authorID},bookID=${book.id})}" href="book-list.html">Delete</a> |
+                <a th:href="@{/comment(genreID=${bookParams.genreID},authorID=${bookParams.authorID},bookID=${book.id})}" href="comment-list.html">Comment</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="block" th:if="${books.isEmpty()}">No books</div>
+
+</body>
+</html>
