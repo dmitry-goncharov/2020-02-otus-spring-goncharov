@@ -7,6 +7,8 @@
 </head>
 <body>
 
+<div th:replace="menu">Menu</div>
+
 <h2>
     <a th:href="@{/book(genreID=${bookParams.genreID},authorID=${bookParams.authorID})}" href="book-list.html">Books</a> >
     Edit book
