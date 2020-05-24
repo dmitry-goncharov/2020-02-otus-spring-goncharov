@@ -2,3 +2,7 @@
 .idea/
 target/
 *.log
+build/
+node/
+node_modules/
+package-lock.json
