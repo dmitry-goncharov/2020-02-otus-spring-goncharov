@@ -75,3 +75,10 @@
 - Used H2 database
 - Scheme and data files are stored in resources
 - Used react for spa
+
+### Homework 11
+- Simple library rest api
+- Used spring boot
+- Used spring reactive data jpa
+- Used spring webflux
+- Used embedded mongo database
