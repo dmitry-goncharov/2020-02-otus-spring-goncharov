@@ -82,3 +82,12 @@
 - Used spring reactive data jpa
 - Used spring webflux
 - Used embedded mongo database
+
+### Homework 12
+- Simple Library Program
+- Used spring boot
+- Used spring data jpa with hibernate
+- Used spring security
+- Used spring web with thymeleaf
+- Used H2 database
+- Scheme and data files are stored in resources
