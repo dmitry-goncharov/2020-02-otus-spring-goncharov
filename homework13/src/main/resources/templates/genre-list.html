@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Genres</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}"/>
+</head>
+<body>
+
+<div th:replace="menu">Menu</div>
+
+<h2>All genres</h2>
+
+<div class="block" sec:authorize="hasAnyRole('EDITOR','ADMIN')">
+    <a th:href="@{/genre/add}" href="genre-add.html">Add genre</a>
+</div>
+
+<div class="block" th:if="!${genres.isEmpty()}">
+    <table class="block-content">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="genre : ${genres}">
+            <td th:text="${genre.id}">1</td>
+            <td th:text="${genre.name}">Genre</td>
+            <td>
+                <span sec:authorize="hasAnyRole('EDITOR','ADMIN')">
+                    <a th:href="@{/genre/edit(id=${genre.id})}" href="genre-edit.html">Edit</a> |
+                    <a th:href="@{/genre/delete(id=${genre.id})}" href="genre-list.html">Delete</a> |
+                </span>
+                <a th:href="@{/book(genreID=${genre.id})}" href="book-list.html">Books</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="block" th:if="${genres.isEmpty()}">No genres</div>
+
+</body>
+</html>

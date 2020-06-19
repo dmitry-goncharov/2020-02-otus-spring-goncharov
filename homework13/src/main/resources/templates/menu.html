@@ -1,0 +1,17 @@
+<div xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+     th:fragment="menu">
+    <h3 sec:authorize="isAuthenticated()">
+        You are logged in as <span sec:authentication="name">name</span> |
+        <span sec:authorize="hasRole('ADMIN')"><a th:href="@{/user}">Users</a> | </span>
+        <a th:href="@{/logout}">Sign out</a>
+    </h3>
+    <h3 sec:authorize="!isAuthenticated()">
+        <a th:href="@{/login}">Sign in</a>
+    </h3>
+    <h1>
+        <a th:href="@{/genre}" href="genre-list.html">Genres</a> |
+        <a th:href="@{/author}" href="author-list.html">Authors</a> |
+        <a th:href="@{/book}" href="book-list.html">Books</a>
+    </h1>
+</div>

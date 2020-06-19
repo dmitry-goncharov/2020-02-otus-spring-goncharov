@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:librarydb
+    initialization-mode: always
+
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  shell:
+    interactive:
+      enabled: true
+
+logging:
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n"
+  level:
+    root: info
