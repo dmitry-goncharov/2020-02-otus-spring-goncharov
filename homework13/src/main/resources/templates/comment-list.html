@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Comments</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}"/>
+</head>
+<body>
+
+<div th:replace="menu">Menu</div>
+
+<h2>
+    <a th:href="@{/book(genreID=${bookParams.genreID},authorID=${bookParams.authorID})}" href="index.html">Books</a> >
+    <span th:if="${bookParams.bookID} == null">All comments</span>
+    <span th:if="${bookParams.bookID} != null">Comments by book "<span th:text="${book.name}">Book</span>"</span>
+</h2>
+
+<div class="block">
+    <a th:href="@{/comment/add(genreID=${bookParams.genreID},authorID=${bookParams.authorID},bookID=${bookParams.bookID})}" href="comment-add.html">Add comment</a>
+</div>
+
+<div class="block" th:if="!${comments.isEmpty()}">
+    <table class="block-content">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>From</th>
+            <th>Comment</th>
+            <th sec:authorize="hasAnyRole('EDITOR','ADMIN')">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="comment : ${comments}">
+            <td th:text="${comment.id}">1</td>
+            <td th:text="${comment.name}">From</td>
+            <td th:text="${comment.text}">Comment</td>
+            <td sec:authorize="hasAnyRole('EDITOR','ADMIN')">
+                <a th:href="@{/comment/edit(genreID=${bookParams.genreID},authorID=${bookParams.authorID},bookID=${bookParams.bookID},id=${comment.id})}" href="comment-edit.html">Edit</a> |
+                <a th:href="@{/comment/delete(genreID=${bookParams.genreID},authorID=${bookParams.authorID},bookID=${bookParams.bookID},id=${comment.id})}" href="comment-list.html">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="block" th:if="${comments.isEmpty()}">No comments</div>
+
+</body>
+</html>
