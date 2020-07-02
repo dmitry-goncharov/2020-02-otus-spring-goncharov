@@ -100,3 +100,9 @@
 - Used spring web with thymeleaf
 - Used H2 database
 - Scheme and data files are stored in resources
+
+### Homework 14
+- Data migration program from jpa repositories to mongo repositories
+- Scheme and data files are stored in resources
+- Used spring boot, spring data jpa, spring data mongo, spring shell
+- Used h2 in-memory database, embedded mongo database
