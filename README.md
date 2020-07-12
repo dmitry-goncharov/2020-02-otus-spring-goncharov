@@ -106,3 +106,9 @@
 - Scheme and data files are stored in resources
 - Used spring boot, spring data jpa, spring data mongo, spring shell
 - Used h2 in-memory database, embedded mongo database
+
+### Homework 15
+- Data processing through channels
+- Scheme and data files are stored in resources
+- Used spring boot, spring data jpa, spring integration
+- Used h2 in-memory database
