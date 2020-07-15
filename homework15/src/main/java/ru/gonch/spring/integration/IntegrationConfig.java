@@ -9,6 +9,7 @@ import org.springframework.integration.dsl.MessageChannels;
 import org.springframework.integration.dsl.Pollers;
 import org.springframework.integration.scheduling.PollerMetadata;
 import org.springframework.messaging.PollableChannel;
+import ru.gonch.spring.service.ErrorHandler;
 import ru.gonch.spring.service.InputActionFilter;
 import ru.gonch.spring.service.InputActionToOutputActionTransformer;
 import ru.gonch.spring.service.OutputActionBookHandler;
@@ -42,6 +43,18 @@ public class IntegrationConfig {
                 .handle(outputActionUserHandler)
                 .handle(outputActionBookHandler)
                 .channel("outputChannel")
+                .get();
+    }
+
+    @Bean
+    public DirectChannel errorChannel() {
+        return new DirectChannel();
+    }
+
+    @Bean
+    public IntegrationFlow errorFlow(ErrorHandler errorHandler) {
+        return IntegrationFlows.from("errorChannel")
+                .handle(errorHandler, "handleErrorMessage")
                 .get();
     }
 }
