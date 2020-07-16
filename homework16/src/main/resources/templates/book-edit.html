@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit book</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}"/>
+</head>
+<body>
+
+<div th:replace="menu">Menu</div>
+
+<h2>
+    <a th:href="@{/book(genreID=${bookParams.genreID},authorID=${bookParams.authorID})}" href="book-list.html">Books</a> >
+    Edit book
+</h2>
+
+<div class="block">
+    <form class="block-content" action="#" method="post"
+          th:action="@{/book/edit(genreID=${bookParams.genreID},authorID=${bookParams.authorID},bookID=${book.id})}" th:object="${book}">
+
+        <div class="row">
+            <label for="id-input">ID:</label>
+            <input id="id-input" type="text" readonly="readonly" th:field="${book.id}"/>
+        </div>
+
+        <div class="row" th:if="${bookParams.genreID} == null">
+            <label for="genre-input">Genre:</label>
+            <select id="genre-input" th:field="${book.genreId}">
+                <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}">Genre</option>
+            </select>
+        </div>
+        <div class="row" th:if="${bookParams.genreID} != null">
+            <input hidden="hidden" type="text" name="genreId" th:value="${bookParams.genreID}"/>
+        </div>
+
+        <div class="row" th:if="${bookParams.authorID} == null">
+            <label for="author-input">Author:</label>
+            <select id="author-input" th:field="${book.authorId}">
+                <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name}">Author</option>
+            </select>
+        </div>
+        <div class="row" th:if="${bookParams.authorID} != null">
+            <input hidden="hidden" type="text" name="authorId" th:value="${bookParams.authorID}"/>
+        </div>
+
+        <div class="row">
+            <label for="name-input">Name:</label>
+            <input id="name-input" type="text" th:field="${book.name}"/>
+            <div class="error" th:if="${#fields.hasErrors('name')}" th:errors="${book.name}">Error</div>
+        </div>
+
+        <div class="row">
+            <button type="submit">Save</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
