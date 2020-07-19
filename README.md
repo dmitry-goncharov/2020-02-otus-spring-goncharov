@@ -112,3 +112,12 @@
 - Scheme and data files are stored in resources
 - Used spring boot, spring data jpa, spring integration
 - Used h2 in-memory database
+
+### Homework 16
+
+- Simple Library Program
+- Used spring boot and data jpa with hibernate
+- Used spring security with authentication and authorization
+- Used spring web with thymeleaf and actuator
+- Used H2 database
+- Scheme and data files are stored in resources
