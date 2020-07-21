@@ -6,6 +6,7 @@
 - Used spring web with thymeleaf and actuator
 - Used H2 database
 - Scheme and data files are stored in resources
+- Dockerfile is stored in root of project
 
 ##### Authentication and authorization
 
@@ -47,8 +48,10 @@ Build: `mvn clean package`
 
 Launch: `java -jar target/spring-hw-17-1.0.jar`
 
-##### Build and run in Docker
+##### Build and run in docker
 
-Build: docker build -t hw17 .
+Build app local: `mvn clean package`
 
-Run: docker run -p 8080:8080 --rm hw17
+Build docker image: `docker build -t hw17 .`
+
+Run docker container: `docker run -p 8080:8080 hw17`

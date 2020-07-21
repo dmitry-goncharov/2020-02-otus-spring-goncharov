@@ -110,7 +110,6 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <executable>true</executable>
-                    <mainClass>ru.gonch.spring.Main</mainClass>
                 </configuration>
             </plugin>
         </plugins>
