@@ -131,3 +131,13 @@
 - Used H2 database
 - Scheme and data files are stored in resources
 - Dockerfile is stored in root of project
+
+### Homework 18
+
+- Simple Library Program
+- Used spring boot and data jpa with hibernate
+- Used spring security with authentication and authorization
+- Used spring web with thymeleaf and actuator
+- Used H2 database
+- Scheme and data files are stored in resources
+- Used hystrix dashboard

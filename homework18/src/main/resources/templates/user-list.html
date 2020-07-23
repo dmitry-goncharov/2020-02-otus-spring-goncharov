@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Users</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}"/>
+</head>
+<body>
+
+<div th:replace="menu">Menu</div>
+
+<h2>All users</h2>
+
+<div class="block" th:if="!${users.isEmpty()}">
+    <table class="block-content">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Login</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}">1</td>
+            <td th:text="${user.login}">User</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="block" th:if="${users.isEmpty()}">No users</div>
+
+</body>
+</html>
