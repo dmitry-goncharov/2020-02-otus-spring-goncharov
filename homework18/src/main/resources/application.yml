@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: library
+
+  datasource:
+    url: jdbc:h2:mem:librarydb
+    initialization-mode: always
+
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,metrics,prometheus,logfile,info,user,content,hystrix.stream"
+  endpoint:
+    health:
+      show-details: always
+  health:
+    defaults:
+      enabled: true
+
+info:
+  app:
+    name: Library
+    description: Simple Library Program
+    version: @project.version@
+
+logging:
+  file:
+    name: ./application.log
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n"
+  level:
+    root: info
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Unexpected error</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}"/>
+</head>
+<body>
+
+<div th:replace="menu">Menu</div>
+
+<h2>Unexpected error</h2>
+
+<div class="block" th:text="${message}">Error message</div>
+
+</body>
+</html>
